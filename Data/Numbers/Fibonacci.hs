@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 -- |
 -- Module      : Data.Numbers.Fibonacci
 -- Copyright   : Sebastian Fischer
@@ -5,7 +7,7 @@
 -- 
 -- Maintainer  : Sebastian Fischer (sebf@informatik.uni-kiel.de)
 -- Stability   : experimental
--- Portability : portable
+-- Portability : uses BangPatterns
 -- 
 -- Fast computation of Fibonacci numbers.
 -- 
@@ -20,7 +22,7 @@ module Data.Numbers.Fibonacci ( fib ) where
 -- @
 -- 
 fib :: (Integral int, Num num) => int -> num
-fib = upperLeft . matrixPower (Matrix 1 1 0)
+fib = upperLeft . matrixPower (Matrix 1 1 0) (Matrix 1 0 1)
 
 {-# SPECIALISE fib :: Int -> Int     #-}
 {-# SPECIALISE fib :: Int -> Integer #-}
@@ -30,21 +32,24 @@ fib = upperLeft . matrixPower (Matrix 1 1 0)
 -- Fibonacci numbers can be computed by exponentiation of symmetric
 -- 2x2 matrices which we represent as triples.
 
-data Matrix a = Matrix a a a
+data Matrix a = Matrix !a !a !a
 
 upperLeft :: Matrix a -> a
 upperLeft (Matrix a _ _) = a
 
 -- We implement exponentiation of matrices by repeated squaring.
 
-matrixPower :: (Integral int, Num num) => Matrix num -> int -> Matrix num
-matrixPower _ 0             = Matrix 1 0 1
-matrixPower m n | r == 0    = square $ matrixPower m q
-                | otherwise = times m . square $ matrixPower m q
+matrixPower :: (Integral int, Num num)
+            => Matrix num -> Matrix num -> int -> Matrix num
+matrixPower !_ !res 0 = res
+matrixPower !m !res n =
+  matrixPower (square m) (if r==0 then res else times m res) q
  where (q,r) = quotRem n 2
 
-{-# SPECIALISE matrixPower :: Matrix Int     -> Int -> Matrix Int     #-}
-{-# SPECIALISE matrixPower :: Matrix Integer -> Int -> Matrix Integer #-}
+{-# SPECIALISE
+    matrixPower :: Matrix Int     -> Matrix Int     -> Int -> Matrix Int     #-}
+{-# SPECIALISE
+    matrixPower :: Matrix Integer -> Matrix Integer -> Int -> Matrix Integer #-}
 
 square :: Num num => Matrix num -> Matrix num
 square m = times m m
