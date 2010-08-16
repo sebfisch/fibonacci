@@ -12,6 +12,8 @@ Homepage:      http://github.com/sebfisch/fibonacci
 Build-Type:    Simple
 Stability:     experimental
 
+Extra-Source-Files: README.markdown
+
 Library
   Build-Depends:    base == 4.*
   Exposed-Modules:  Data.Numbers.Fibonacci
