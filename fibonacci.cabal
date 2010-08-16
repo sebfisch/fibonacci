@@ -1,11 +1,7 @@
-Name:          primes
-Version:       0.2.0.0
+Name:          fibonacci
+Version:       0.1.0.0
 Cabal-Version: >= 1.6
-Synopsis:      Efficient, purely functional generation of prime numbers
-Description:
-
-  Computes Fibonacci Numbers in logarithmic time.
-
+Synopsis:      Fast computation of Fibonacci numbers.
 Category:      Algorithms, Numerical
 License:       BSD3
 License-File:  LICENSE
