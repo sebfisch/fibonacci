@@ -3,7 +3,7 @@
 -- Copyright   : Sebastian Fischer
 -- License     : BSD3
 -- 
--- Maintainer  : Sebastian Fischer (sebf@informatik.uni-kiel.de)
+-- Maintainer  : Sebastian Fischer
 -- Stability   : experimental
 -- Portability : portable
 -- 
