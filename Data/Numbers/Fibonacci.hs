@@ -7,25 +7,35 @@
 -- Stability   : experimental
 -- Portability : portable
 -- 
--- Fast computation of Fibonacci numbers.
+-- Fast computation of Fibonacci numbers. Use version @0.1.*@ if you
+-- prefer the Fibonacci sequence to start with one instead of
+-- zero. Version @0.2.*@ adds correct handling of negative arguments
+-- and changes the implementation to satisfy @fib 0 = 0@.
+-- 
+-- See <http://en.wikipedia.org/wiki/Fibonacci_number#Matrix_form> for
+-- a description of the employed method.
 -- 
 module Data.Numbers.Fibonacci ( fib ) where
 
 -- |
--- Computes Fibonacci numbers. We begin the Fibonacci sequence with
--- zero, not one:
+-- Computes Fibonacci numbers. Yields the same results as
+-- 
+-- > fib 0         = 0
+-- > fib 1         = 1
+-- > fib n | n > 1 = fib (n-2) + fib (n-1)
+-- >       | n < 0 = (-1)^(1-n) * fib (-n)
+-- 
+-- but more efficiently.
+-- 
+-- Examples:
 -- 
 -- @
 -- ghci> map fib [0..9]
 -- [0,1,1,2,3,5,8,13,21,34]
--- @
--- 
--- Use version @0.1.*@ if you want @fib 0 = 1@. Negative arguments are
--- supported too:
--- 
--- @
 -- ghci> map (fib . negate) [0..9]
 -- [0,1,-1,2,-3,5,-8,13,-21,34]
+-- ghci> length . show $ fib 10000000
+-- 2089877
 -- @
 -- 
 fib :: (Integral int, Num num) => int -> num
