@@ -13,14 +13,16 @@ module Data.Numbers.Fibonacci ( fib ) where
 
 -- |
 -- Computes Fibonacci numbers. We begin the Fibonacci sequence with
--- one, not zero:
+-- zero, not one:
 -- 
 -- @
---   map fib [0..9] == [1,1,2,3,5,8,13,21,34,55]
+--   map fib [0..9] == [0,1,1,2,3,5,8,13,21,34]
 -- @
+-- 
+-- If you want @fib 0 = 1@ use version @0.1.*@.
 -- 
 fib :: (Integral int, Num num) => int -> num
-fib = upperLeft . matrixPower (Matrix 1 1 0)
+fib = upperRight . matrixPower (Matrix 1 1 0)
 
 {-# SPECIALISE fib :: Int -> Int     #-}
 {-# SPECIALISE fib :: Int -> Integer #-}
@@ -32,8 +34,8 @@ fib = upperLeft . matrixPower (Matrix 1 1 0)
 
 data Matrix a = Matrix a a a
 
-upperLeft :: Matrix a -> a
-upperLeft (Matrix a _ _) = a
+upperRight :: Matrix a -> a
+upperRight (Matrix _ a _) = a
 
 -- We implement exponentiation of matrices by repeated squaring.
 
