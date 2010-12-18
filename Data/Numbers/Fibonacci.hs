@@ -51,6 +51,7 @@ upperLeft (Matrix a _ _) = a
 
 matrixPower :: (Integral int, Num num) => Matrix num -> int -> Matrix num
 matrixPower _ 0             = Matrix 1 0 1
+matrixPower m 1             = m
 matrixPower m n | r == 0    = square $ matrixPower m q
                 | otherwise = times m . square $ matrixPower m q
  where (q,r) = quotRem n 2
