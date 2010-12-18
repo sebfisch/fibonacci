@@ -1,5 +1,5 @@
 Name:          fibonacci
-Version:       0.2.0.0
+Version:       0.2.0.1
 Cabal-Version: >= 1.6
 Synopsis:      Fast computation of Fibonacci numbers.
 Description:   
