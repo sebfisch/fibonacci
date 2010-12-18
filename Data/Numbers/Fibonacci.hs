@@ -16,13 +16,23 @@ module Data.Numbers.Fibonacci ( fib ) where
 -- zero, not one:
 -- 
 -- @
---   map fib [0..9] == [0,1,1,2,3,5,8,13,21,34]
+-- ghci> map fib [0..9]
+-- [0,1,1,2,3,5,8,13,21,34]
 -- @
 -- 
--- If you want @fib 0 = 1@ use version @0.1.*@.
+-- Use version @0.1.*@ if you want @fib 0 = 1@. Negative arguments are
+-- supported too:
+-- 
+-- @
+-- ghci> map (fib . negate) [0..9]
+-- [0,1,-1,2,-3,5,-8,13,-21,34]
+-- @
 -- 
 fib :: (Integral int, Num num) => int -> num
-fib = upperRight . matrixPower (Matrix 1 1 0)
+fib n | n == 0    = 0
+      | n >  0    = upperLeft . matrixPower (Matrix 1 1 0) $ pred n
+      | even n    = negate . fib $ negate n
+      | otherwise = fib $ negate n
 
 {-# SPECIALISE fib :: Int -> Int     #-}
 {-# SPECIALISE fib :: Int -> Integer #-}
@@ -34,8 +44,8 @@ fib = upperRight . matrixPower (Matrix 1 1 0)
 
 data Matrix a = Matrix a a a
 
-upperRight :: Matrix a -> a
-upperRight (Matrix _ a _) = a
+upperLeft :: Matrix a -> a
+upperLeft (Matrix a _ _) = a
 
 -- We implement exponentiation of matrices by repeated squaring.
 
