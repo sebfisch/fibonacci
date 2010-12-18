@@ -39,8 +39,7 @@ module Data.Numbers.Fibonacci ( fib ) where
 -- @
 -- 
 fib :: (Integral int, Num num) => int -> num
-fib n | n == 0    = 0
-      | n >  0    = upperRight $ matrixPower (Matrix 1 1 0) n
+fib n | n >= 0    = upperRight $ matrixPower (Matrix 1 1 0) n
       | even n    = negate . fib $ negate n
       | otherwise = fib $ negate n
 
