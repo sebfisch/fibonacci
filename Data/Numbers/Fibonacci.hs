@@ -30,7 +30,7 @@ module Data.Numbers.Fibonacci ( fib ) where
 -- 
 fib :: (Integral int, Num num) => int -> num
 fib n | n == 0    = 0
-      | n >  0    = upperLeft . matrixPower (Matrix 1 1 0) $ pred n
+      | n >  0    = upperRight $ matrixPower (Matrix 1 1 0) n
       | even n    = negate . fib $ negate n
       | otherwise = fib $ negate n
 
@@ -40,12 +40,14 @@ fib n | n == 0    = 0
 -- See http://en.wikipedia.org/wiki/Fibonacci_number#Matrix_form
 
 -- Fibonacci numbers can be computed by exponentiation of symmetric
--- 2x2 matrices which we represent as triples.
-
+-- 2x2 matrices which we represent as triples. We have for all n:
+--
+--     (Matrix 1 1 0)^n = Matrix (fib (n+1)) (fib n) (fib (n-1))
+--
 data Matrix a = Matrix a a a
 
-upperLeft :: Matrix a -> a
-upperLeft (Matrix a _ _) = a
+upperRight :: Matrix a -> a
+upperRight (Matrix _ a _) = a
 
 -- We implement exponentiation of matrices by repeated squaring.
 
